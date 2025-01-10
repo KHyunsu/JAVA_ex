@@ -2,7 +2,7 @@ package github;
 
 import java.util.HashSet;
 
-public class no5 {
+public class no5 { // 프로그래머스 소수찾기
     public static void main(String[] arr) {
         System.out.println(solution("17"));
     }
