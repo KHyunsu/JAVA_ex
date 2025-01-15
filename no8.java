@@ -19,7 +19,7 @@ public class no8 {
     }
     private static void dfs(int depth, int fatigue, int[][] dungeons){
         for(int i = 0; i < dungeons.length; i++){
-            // 방문한 던전이라면 continue를 통해 다음 던전으로 skip
+            // 방문한 던전이라면 continue를 통해 다음 던전으로 skip + 방문하고자 하는 던전의 최소 피로도가 현재 남은 피로도 보다 높다면 skip
             if(visited[i] || (dungeons[i][0] > fatigue)){
                 continue;
             }
