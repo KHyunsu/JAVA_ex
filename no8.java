@@ -20,7 +20,7 @@ public class no8 {
     private static void dfs(int depth, int fatigue, int[][] dungeons){
         for(int i = 0; i < dungeons.length; i++){
             // 방문한 던전이라면 continue를 통해 다음 던전으로 skip
-            if(visited[i] || dungeons[i][0] > fatigue){
+            if(visited[i] || (dungeons[i][0] > fatigue)){
                 continue;
             }
             // 방문하지 않았다면 방문 처리
