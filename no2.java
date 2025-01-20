@@ -1,36 +1,73 @@
-package github;
+package assignment;
+
+import java.util.*;
+import java.io.IOException;
 
 public class no2 {
-    public static void main(String[] args) {
-        System.out.println(solution(new int[]{3, 0, 6, 1, 5}));
-    }
-    // 프로그래머스 H-index 구하기
-    public static int solution(int[] citations) {
-        int h = 0;
-        int cnt1;  // h번 이상 인용된 논문의 수
-        int cnt2;  // h번 이하 인용된 논문의 수
+    // 방문여부를 담을 check배열
+    static boolean check[];
+    // 정답을 담을 StringBuilder
+    static StringBuilder sb = new StringBuilder();
+    // bfs, dfs를 이용하기위해 static변수로 선언
+    static int node, line, start;
+    // 간선의 유무를 담을 배열 선언
+    static boolean[][] arr;
+    // bfs에 필요한 큐 선언
+    static Queue<Integer> queue = new LinkedList<>();
 
-        while (true) {
-            cnt1 = 0;
-            cnt2 = 0;
-            // citation을 돌며 h번 이상 인용된 논문의 수와 h번 이하 인용된 논문의 수 구하기
-            for (int i = 0; i < citations.length; i++) {
-                if (citations[i] >= h) {
-                    cnt1++;
-                } else if (citations[i] <= h) {
-                    cnt2++;
-                }
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+
+        node = sc.nextInt();
+        line = sc.nextInt();
+        start = sc.nextInt();
+        check = new boolean[node + 1];
+        arr = new boolean[node + 1][node + 1];
+
+        for (int i = 0; i < line; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            // 문제에서 주어진 간선은 양방향이다 처리
+            arr[x][y] = arr[y][x]  = true;
+        }
+        dfs(start);
+        sb.append("\n");
+        check = new boolean[node + 1];
+        bfs(start);
+
+        System.out.println(sb);
+    }
+
+    public static void dfs(int start) {
+        // 시작 노드 방문 처리
+        check[start] = true;
+        sb.append(start + " ");
+        for (int i = 0; i <= node; i++) {
+            // 간선이 존재하고, 방문하지 않았다면 dfs를 재귀 호출
+            if (arr[start][i] && !check[i]) {
+                dfs(i);
             }
-            // 문제의 조건대로 h번 이상 인용되고, h번 이하 인용되었다면 h값을 1증가시킨다.
-            if (cnt1 >= h && cnt2 <= h) {
-                h++;
-            } else { // 만약 그렇지 않다면 h값의 최댓값은 현재 h값-1 이므로 h를 1감소시키고 루프를 빠져나간다.
-                h--;
-                return h;
+        }
+
+    }
+
+    public static void bfs(int start) {
+        // 큐에 시작 노드를 삽입하고 방문 처리
+        queue.add(start);
+        check[start] = true;
+
+        while (!queue.isEmpty()) {
+            start = queue.poll();
+            sb.append(start + " ");
+
+            for (int i = 1; i <= node; i++) {
+                // 시작 노드에 대해 간선이 존재해야 하고, 방문하지 않았다면 큐에 삽입하고 방문처리를 한다.
+                if (arr[start][i] && !check[i]) {
+                    queue.add(i);
+                    check[i] = true;
+                }
             }
         }
     }
 }
-// 처음에 문제를 풀 때는 단지 cnt2가 cnt1보다 커지는 순간 루프를 빠져나오는 것으로 문제를 이해했었다. 막상 테스트케이스를 돌려보니 예상한 답과는 전혀 다른 답이 나와서 당황했다
-// 문제를 다시 자세히 읽어보고 문제에 나온 조건 그대로 h번 이상 인용된 논문의 수가 h개 이상이고, h번 이하 인용된 논문의 수가 h개 이하이면 h를 1증가 시키는 조건을 적용했다
-// 만약 위에 제시한 조건이 다르다면 현재의 h값이 최대가 아닌 그보다 1작은 값이 최대인 h값이 되므로 h값을 1 감소 시키고 루프를 빠져나가도록 구사했다.
+
