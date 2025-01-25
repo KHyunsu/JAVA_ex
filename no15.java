@@ -19,11 +19,11 @@ public class no15 {
             n /= k;
         }
         sb.append(n).reverse();
-        // 문제에서 제시한 조건대로 0을 기준으로 수를 나눈다.
+        // 문제에서 제시한 조건대로 수를 나눠서 배열에 저장.
         String[] arr = sb.toString().split("0");
 
         for (int i = 0; i < arr.length; i++) {
-            // 0이 연속으로 나오는 경우 배열에 공백이 저장되어 있을수 있으므로 예외 처리
+            // 0이 연속으로 나오는 경우 배열에 빈문자열이 저장되어 있을수 있으므로 예외 처리
             if (arr[i].isEmpty()) {
                 continue;
             }
@@ -38,6 +38,7 @@ public class no15 {
     // 소수인지 판별하는 isPrime 함수(문제에서 n의 범위가 1 이상 1,000,000이하라고 했으므로 long을 받는다)
     public static boolean isPrime(long n) {
         boolean isPrime = true;
+        
         if (n < 2) {
             isPrime = false;
             return isPrime;
